@@ -1,48 +1,55 @@
-import { useContext, useState } from 'react';
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import myContext from '../../context/data/myContext';
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, fireDB } from '../../fireabase/FirebaseConfig';
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { auth } from '../../fireabase/FirebaseConfig';
+import { fireDB } from '../../fireabase/FirebaseConfig';
+import { Timestamp } from 'firebase/firestore';
 import Loader from '../../components/loader/Loader';
-
+import { collection } from 'firebase/firestore';
+import { addDoc } from 'firebase/firestore';
 function Signup() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+   
+    const [name,setName]=useState("");
+    const[email,setEmail]=useState("");
+    const [password,setPassword]=useState("");
 
-    const context = useContext(myContext);
+    const context=useContext(myContext);
     const { loading, setLoading } = context;
 
-    const signup = async () => {
+    const signup=async()=>{
         setLoading(true)
-        if (name === "" || email === "" || password === "") {
+        if(name==""||email==""||password=="")
+        {
             return toast.error("All fields are required")
         }
+        try{
+            {/*sirf is ek line se hi firebase auth me signup ho jayega */}
+            const users=await createUserWithEmailAndPassword(auth,email,password);
+            {/*but abhi cloud firestore me bhi ek collection bna kr data store krna hai  */}
+            
+            {/*this is the collection object to add*/}
+             const user={
+                name:name,
+                uid:users.user.uid,
+                email:users.user.email,
+                time:Timestamp.now()
+             }
 
-        try {
-            const users = await createUserWithEmailAndPassword(auth, email, password);
-
-            // console.log(users)
-
-            const user = {
-                name: name,
-                uid: users.user.uid,
-                email: users.user.email,
-                time : Timestamp.now()
-            }
-            const userRef = collection(fireDB, "users")
-            await addDoc(userRef, user);
-            toast.success("Signup Succesfully")
-            setName("");
+             {/*collection ki ek refernce create kr ke usme user add krte jao */}
+             const userRef=collection(fireDB,"users")
+             await addDoc(userRef,user);
+             toast.success("Signup Succesfully")
+             setName("");
             setEmail("");
             setPassword("");
             setLoading(false)
-            
-        } catch (error) {
+        }
+        catch(error){
             console.log(error)
             setLoading(false)
+
         }
     }
 
@@ -55,18 +62,17 @@ function Signup() {
                 </div>
                 <div>
                     <input type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                         name='name'
                         className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                        placeholder='Name'
+                        placeholder='name'
                     />
                 </div>
-
                 <div>
                     <input type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                         name='email'
                         className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                         placeholder='Email'
@@ -76,14 +82,14 @@ function Signup() {
                     <input
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e)=>setPassword(e.target.value)}
                         className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                         placeholder='Password'
                     />
                 </div>
                 <div className=' flex justify-center mb-3'>
                     <button
-                        onClick={signup}
+                    onClick={signup}
                         className=' bg-red-500 w-full text-white font-bold  px-2 py-2 rounded-lg'>
                         Signup
                     </button>

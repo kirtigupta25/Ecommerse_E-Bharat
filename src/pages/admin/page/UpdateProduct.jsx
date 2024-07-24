@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-import myContext from '../../../context/data/myContext';
-
+import React from 'react'
+import { useContext} from 'react';
+import mycontext from '../../../context/data/myContext';
 function UpdateProduct() {
-    const context = useContext(myContext);
-    const { products, setProducts, updateProduct } = context;
+    const context=useContext(mycontext);
+    const {products,setproducts,addProduct,updateProduct}=context
     return (
         <div>
             <div className=' flex justify-center items-center h-screen'>
@@ -13,8 +13,8 @@ function UpdateProduct() {
                     </div>
                     <div>
                         <input type="text"
-                            value={products.title}
-                            onChange={(e) => setProducts({ ...products, title: e.target.value })}
+                        value={products.title}
+                        onChange={(e)=>setproducts({...products,title:e.target.value})}
                             name='title'
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                             placeholder='Product title'
@@ -22,8 +22,8 @@ function UpdateProduct() {
                     </div>
                     <div>
                         <input type="text"
-                            value={products.price}
-                            onChange={(e) => setProducts({ ...products, price: e.target.value })}
+                        value={products.price}
+                        onChange={(e)=>setproducts({...products,price:e.target.value})}
                             name='price'
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                             placeholder='Product price'
@@ -31,30 +31,30 @@ function UpdateProduct() {
                     </div>
                     <div>
                         <input type="text"
-                            value={products.imageUrl}
-                            onChange={(e) => setProducts({ ...products, imageUrl: e.target.value })}
                             name='imageurl'
+                            value={products.imageUrl}
+                        onChange={(e)=>setproducts({...products,imageUrl:e.target.value})}
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                             placeholder='Product imageUrl'
                         />
                     </div>
                     <div>
                         <input type="text"
-                            value={products.category}
-                            onChange={(e) => setProducts({ ...products, category: e.target.value })}
                             name='category'
+                            value={products.category}
+                        onChange={(e)=>setproducts({...products,category:e.target.value})}
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                             placeholder='Product category'
                         />
                     </div>
                     <div>
-                        <textarea cols="30" rows="10" name='title'
-                         value={products.description}
-                         onChange={(e) => setProducts({ ...products, description: e.target.value })}
+                       <textarea cols="30" rows="10" name='title'
+                       value={products.description}
+                       onChange={(e)=>setproducts({...products,description:e.target.value})}
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Product desc'>
+                            placeholder='Product description'>
 
-                        </textarea>
+                       </textarea>
                     </div>
                     <div className=' flex justify-center mb-3'>
                         <button
@@ -68,6 +68,7 @@ function UpdateProduct() {
             </div>
         </div>
     )
+       
 }
 
 export default UpdateProduct
